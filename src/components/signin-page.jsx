@@ -2,8 +2,17 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import { GoogleButton } from "react-google-button";
 import NavBar from "./navbar";
+import { useAuthContext } from "../contexts/auth-context";
 
 export default function SignIn() {
+  const { googleSignIn } = useAuthContext();
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await googleSignIn();
+    } catch (error) {}
+  };
+
   return (
     <>
       <NavBar active="profile"> </NavBar>
@@ -22,7 +31,11 @@ export default function SignIn() {
               Please press the button below to register a Vexed account, or sign
               in to an existing one.
             </Card.Text>
-            <GoogleButton style={{ width: "100%" }} type="light"></GoogleButton>
+            <GoogleButton
+              style={{ width: "100%" }}
+              type="light"
+              onClick={handleGoogleSignIn}
+            ></GoogleButton>
           </Card.Body>
         </Card>
       </div>
