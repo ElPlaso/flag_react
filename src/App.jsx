@@ -2,7 +2,8 @@ import "./App.css";
 import React from "react";
 import Game from "./components/game";
 import GameIndex from "./components/game-index";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SignIn from "./components/signin-page";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { GameProvider } from "./contexts/game-context";
 
 function App() {
@@ -10,8 +11,9 @@ function App() {
     <GameProvider>
       <Router>
         <Routes>
-          <Route exact path="/Vexed/" element={<Game />}></Route>
-          <Route exact path="/Vexed/index" element={<GameIndex />}></Route>
+          <Route exact path="/" element={<Game />}></Route>
+          <Route exact path="/index" element={<GameIndex />}></Route>
+          <Route exact path="/profile" element={<SignIn />}></Route>
         </Routes>
       </Router>
     </GameProvider>

@@ -1,10 +1,12 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import { GoogleButton } from "react-google-button";
+import NavBar from "./navbar";
 
 export default function SignIn() {
   return (
     <>
+      <NavBar active="profile"> </NavBar>
       <div className="App" id="user">
         <Card
           className="text-secondary mt-4"
