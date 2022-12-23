@@ -1,6 +1,7 @@
 import React from "react";
 import countries from "../data/country-names";
 import altnames from "../data/name-alts";
+import { HashLink as Link } from "react-router-hash-link";
 
 export default function GameIndex() {
   return (
@@ -50,9 +51,9 @@ export default function GameIndex() {
           })}
         </div>
         <div className="mb-4">
-          <a href="./" className="App-link">
+          <Link className="App-link" to="/">
             Home
-          </a>
+          </Link>
         </div>
       </div>
     </div>
