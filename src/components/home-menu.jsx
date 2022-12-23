@@ -6,6 +6,7 @@ import logo from "../images/flaghead.png";
 import Accordion from "react-bootstrap/Accordion";
 import RegionSelect from "./region-select";
 import { useGameContext } from "../contexts/game-context";
+import { HashLink as Link } from "react-router-hash-link";
 
 export default function HomeMenu() {
   const { gameMode, countries, timeSetting, startgame } = useGameContext();
@@ -103,13 +104,10 @@ export default function HomeMenu() {
             Disputed states are included<br></br>
             "All flags" includes flags of non-soverign states and more <br></br>
             View featured country/region names
-            <a
-              href="/Vexed/index"
-              className="App-link"
-              style={{ marginLeft: 5 }}
-            >
+            <Link className="App-link" to="/index#top">
+              {" "}
               here
-            </a>
+            </Link>
             <br></br>
             <br></br>
             <div className="text-light">Time control</div>
