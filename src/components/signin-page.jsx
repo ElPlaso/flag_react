@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card } from "react-bootstrap";
 import { GoogleButton } from "react-google-button";
 import NavBar from "./navbar";
 import { useAuthContext } from "../contexts/auth-context";
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
-  const { googleSignIn } = useAuthContext();
+  const { googleSignIn, user } = useAuthContext();
+  const navigate = useNavigate();
 
   const handleGoogleSignIn = async () => {
     try {
       await googleSignIn();
     } catch (error) {}
   };
+
+  useEffect(() => {
+    if (user != null) {
+      navigate("/profile");
+    }
+  }, [user]);
 
   return (
     <>
