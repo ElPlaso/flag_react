@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
-import { Card } from "react-bootstrap";
+import React from "react";
+import { Card, Button, Row, Col } from "react-bootstrap";
 import NavBar from "./navbar";
 import { useAuthContext } from "../contexts/auth-context";
+import FlagIconBadge from "./flag-icon-badge";
 
 export default function Profile() {
   const { logOut, user } = useAuthContext();
@@ -19,16 +20,43 @@ export default function Profile() {
           style={{
             width: 350,
             fontSize: "18px",
-            textAlign: "left",
           }}
         >
-          <Card.Body style={{ alignItems: "center" }}>
+          <Card.Header>
+            <i className="bi bi-person-circle bi-10x"></i>
+          </Card.Header>
+          <Card.Body>
             <Card.Title>Hello {user?.displayName}.</Card.Title>
             <Card.Text>Welcome to your Vexed profile.</Card.Text>
-            <button onClick={handleSignOut} className="border py-2 px-5 mt-10">
-              Logout
-            </button>
           </Card.Body>
+          <Card.Body>
+            <Row>
+              <Col>
+                <Card.Subtitle>Display Name</Card.Subtitle>
+                <Card.Text className="mt-2"> {user?.displayName}</Card.Text>
+              </Col>
+              <Col>
+                <Card.Subtitle>Display Flag</Card.Subtitle>
+                <FlagIconBadge userFlag="nz" />
+              </Col>
+            </Row>
+          </Card.Body>
+          <Card.Footer>
+            <Button
+              variant="outline-light"
+              onClick={{}}
+              className="py-2 px-4 m-2 text-dark"
+            >
+              Edit profile
+            </Button>
+            <Button
+              variant="outline-light"
+              onClick={handleSignOut}
+              className="py-2 px-4 m-2 text-danger"
+            >
+              Sign out
+            </Button>
+          </Card.Footer>
         </Card>
       </div>
     </>
