@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import NavBar from "./navbar";
 import { useAuthContext } from "../contexts/auth-context";
 import FlagIconBadge from "./flag-icon-badge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import data from "../data/country-names";
+import { useProfileContext } from "../contexts/profile-context";
 
 export default function Profile() {
   const { logOut, user } = useAuthContext();
+  const { updateProfileDetails } = useProfileContext();
   const [editMode, setEditMode] = useState(false);
   const [userFlag, setUserFlag] = useState(null);
+
+  const displayNameRef = useRef();
 
   const handleSignOut = async () => {
     try {
@@ -21,8 +25,17 @@ export default function Profile() {
     setUserFlag(null);
   };
 
-  const handleOnEdit = () => {
-    setEditMode(!editMode);
+  const handleOnEdit = async () => {
+    try {
+      await updateProfileDetails(
+        displayNameRef.current.value,
+        userFlag,
+        user.uid
+      );
+      setEditMode(!editMode);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onClearFlag = () => {
@@ -97,6 +110,7 @@ export default function Profile() {
                 type="text"
                 className="form-control mb-4"
                 placeholder="Enter a new name..."
+                ref={displayNameRef}
               />
               <Card.Text>
                 Display Flag{" "}
