@@ -7,6 +7,7 @@ import Profile from "./components/profile-page";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { GameProvider } from "./contexts/game-context";
 import { AuthProvider } from "./contexts/auth-context";
+import { ProfileProvider } from "./contexts/profile-context";
 import PrivateRoute from "./components/private-route";
 
 function App() {
@@ -23,7 +24,9 @@ function App() {
               path="/profile"
               element={
                 <PrivateRoute>
-                  <Profile />
+                  <ProfileProvider>
+                    <Profile />
+                  </ProfileProvider>
                 </PrivateRoute>
               }
             ></Route>
