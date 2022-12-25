@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Card, Button, Row, Col } from "react-bootstrap";
+import React, { useState, useRef, useEffect } from "react";
+import { Card, Button, Row, Col, Spinner } from "react-bootstrap";
 import NavBar from "./navbar";
 import { useAuthContext } from "../contexts/auth-context";
 import FlagIconBadge from "./flag-icon-badge";
@@ -9,11 +9,28 @@ import { useProfileContext } from "../contexts/profile-context";
 
 export default function Profile() {
   const { logOut, user } = useAuthContext();
-  const { updateProfileDetails } = useProfileContext();
+  const { updateProfileDetails, getProfileDetails } = useProfileContext();
   const [editMode, setEditMode] = useState(false);
   const [userFlag, setUserFlag] = useState(null);
+  const [currentDisplayName, setCurrentDisplayName] = useState(null);
+  const [currentDisplayFlag, setCurrentDisplayFlag] = useState(null);
+  const [profileLoading, setProfileLoading] = useState(true);
 
   const displayNameRef = useRef();
+
+  const fetchProfileData = async () => {
+    const profileData = await getProfileDetails(user.uid);
+    if (profileData) {
+      setCurrentDisplayName(profileData.display_name);
+      setCurrentDisplayFlag(profileData.flag_code);
+    }
+    setProfileLoading(false);
+  };
+
+  useEffect(() => {
+    fetchProfileData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSignOut = async () => {
     try {
@@ -33,6 +50,7 @@ export default function Profile() {
         user.uid
       );
       setEditMode(!editMode);
+      await fetchProfileData();
     } catch (error) {
       console.log(error);
     }
@@ -57,22 +75,38 @@ export default function Profile() {
             <Card.Header>
               <i className="bi bi-person-circle" />
             </Card.Header>
+
             <Card.Body>
               <Card.Title>Hello {user?.displayName}.</Card.Title>
               <Card.Text>Welcome to your Vexed profile.</Card.Text>
             </Card.Body>
-            <Card.Body>
-              <Row>
-                <Col>
-                  <Card.Subtitle>Display Name</Card.Subtitle>
-                  <Card.Text className="mt-2"> {user?.displayName}</Card.Text>
-                </Col>
-                <Col>
-                  <Card.Subtitle>Display Flag</Card.Subtitle>
-                  <FlagIconBadge userFlag="nz" />
-                </Col>
-              </Row>
-            </Card.Body>
+            {profileLoading ? (
+              <Card.Body>
+                <Spinner />
+              </Card.Body>
+            ) : (
+              <div>
+                <Card.Body>
+                  <Row>
+                    <Col>
+                      <Card.Subtitle>Display Name</Card.Subtitle>
+                      <Card.Text className="mt-2">
+                        {" "}
+                        {currentDisplayName ? currentDisplayName : "-"}
+                      </Card.Text>
+                    </Col>
+                    <Col>
+                      <Card.Subtitle>Display Flag</Card.Subtitle>
+                      {currentDisplayFlag ? (
+                        <FlagIconBadge userFlag={currentDisplayFlag} />
+                      ) : (
+                        <Card.Text className="mt-2">-</Card.Text>
+                      )}
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </div>
+            )}
             <Card.Footer>
               <Button
                 variant="outline-light"
