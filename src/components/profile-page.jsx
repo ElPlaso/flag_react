@@ -12,6 +12,7 @@ export default function Profile() {
   const { updateProfileDetails, getProfileDetails } = useProfileContext();
   const [editMode, setEditMode] = useState(false);
   const [userFlag, setUserFlag] = useState(null);
+  const [noFlag, setNoFlag] = useState(false);
   const [currentDisplayName, setCurrentDisplayName] = useState(null);
   const [currentDisplayFlag, setCurrentDisplayFlag] = useState(null);
   const [profileLoading, setProfileLoading] = useState(true);
@@ -40,17 +41,34 @@ export default function Profile() {
   const toggleEditMode = () => {
     setEditMode(!editMode);
     setUserFlag(null);
+    setNoFlag(false);
   };
 
   const handleOnEdit = async () => {
     try {
-      await updateProfileDetails(
-        displayNameRef.current.value,
-        userFlag,
-        user.uid
-      );
-      setEditMode(!editMode);
-      await fetchProfileData();
+      if (
+        (userFlag === currentDisplayFlag ||
+          (noFlag === false && userFlag === null)) &&
+        displayNameRef.current.value === currentDisplayName
+      ) {
+      } else {
+        let newFlagCode = null;
+        if (noFlag === false) {
+          if (userFlag) {
+            newFlagCode = userFlag;
+          } else {
+            newFlagCode = currentDisplayFlag;
+          }
+        }
+        await updateProfileDetails(
+          displayNameRef.current.value,
+          newFlagCode,
+          user.uid
+        );
+
+        setEditMode(!editMode);
+        await fetchProfileData();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -58,6 +76,7 @@ export default function Profile() {
 
   const onClearFlag = () => {
     setUserFlag(null);
+    setNoFlag(true);
   };
 
   return (
@@ -137,6 +156,7 @@ export default function Profile() {
             <Card.Body>
               <Card.Text>Display Name</Card.Text>
               <input
+                defaultValue={currentDisplayName}
                 style={{
                   borderColor: "#6c757d",
                   backgroundColor: "transparent",
@@ -152,8 +172,10 @@ export default function Profile() {
                   <>
                     <FlagIconBadge userFlag={userFlag} />
                   </>
+                ) : !noFlag && currentDisplayFlag ? (
+                  <FlagIconBadge userFlag={currentDisplayFlag} />
                 ) : (
-                  <i className="bi bi-flag"></i>
+                  "-"
                 )}
               </Card.Text>
               <Typeahead
@@ -171,6 +193,7 @@ export default function Profile() {
                     return country.name === selected[0];
                   });
                   if (country) {
+                    setNoFlag(false);
                     setUserFlag(country.code);
                   }
                 }}
@@ -180,7 +203,7 @@ export default function Profile() {
               >
                 {({ onClear, selected }) => (
                   <div className="rbt-aux">
-                    {!!selected.length && (
+                    {!noFlag && (userFlag || currentDisplayFlag) && (
                       <Button
                         variant="link"
                         className="text-secondary"
