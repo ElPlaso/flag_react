@@ -8,7 +8,7 @@ import data from "../data/country-names";
 import { useProfileContext } from "../contexts/profile-context";
 
 export default function Profile() {
-  const { logOut, user } = useAuthContext();
+  const { logOut, user, uid } = useAuthContext();
   const { updateProfileDetails, getProfileDetails } = useProfileContext();
   const [editMode, setEditMode] = useState(false);
   const [userFlag, setUserFlag] = useState(null);
@@ -20,18 +20,22 @@ export default function Profile() {
   const displayNameRef = useRef();
 
   const fetchProfileData = async () => {
-    const profileData = await getProfileDetails(user.uid);
-    if (profileData) {
-      setCurrentDisplayName(profileData.display_name);
-      setCurrentDisplayFlag(profileData.flag_code);
-    }
-    setProfileLoading(false);
+    try {
+      if (uid) {
+        const profileData = await getProfileDetails(uid);
+        if (profileData) {
+          setCurrentDisplayName(profileData.display_name);
+          setCurrentDisplayFlag(profileData.flag_code);
+        }
+        setProfileLoading(false);
+      }
+    } catch (error) {}
   };
 
   useEffect(() => {
     fetchProfileData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [uid]);
 
   const handleSignOut = async () => {
     try {
