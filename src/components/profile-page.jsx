@@ -16,6 +16,7 @@ export default function Profile() {
   const [currentDisplayName, setCurrentDisplayName] = useState(null);
   const [currentDisplayFlag, setCurrentDisplayFlag] = useState(null);
   const [profileLoading, setProfileLoading] = useState(true);
+  const [potentialDisplayName, setPotentialDisplayName] = useState(null);
 
   const displayNameRef = useRef();
 
@@ -45,6 +46,7 @@ export default function Profile() {
   const toggleEditMode = () => {
     setEditMode(!editMode);
     setUserFlag(null);
+    setPotentialDisplayName(null);
     setNoFlag(false);
   };
 
@@ -81,6 +83,11 @@ export default function Profile() {
   const onClearFlag = () => {
     setUserFlag(null);
     setNoFlag(true);
+  };
+
+  const handleDisplayNameChange = () => {
+    const name = displayNameRef.current.value;
+    setPotentialDisplayName(name.trim());
   };
 
   return (
@@ -158,7 +165,13 @@ export default function Profile() {
           >
             <Card.Header className="text-center">Edit Profile</Card.Header>
             <Card.Body>
-              <Card.Text>Display Name</Card.Text>
+              <Card.Text>
+                Display Name{" "}
+                {(potentialDisplayName === "" ||
+                  (potentialDisplayName === null && !currentDisplayName)) &&
+                  "-"}
+              </Card.Text>
+
               <input
                 defaultValue={currentDisplayName}
                 style={{
@@ -169,6 +182,7 @@ export default function Profile() {
                 className="form-control mb-4"
                 placeholder="Enter a new name..."
                 ref={displayNameRef}
+                onChange={handleDisplayNameChange}
               />
               <Card.Text>
                 Display Flag{" "}
@@ -228,6 +242,11 @@ export default function Profile() {
                 variant="outline-light"
                 className=" px-4 m-2 text-success"
                 onClick={handleOnEdit}
+                disabled={
+                  ((!userFlag && !noFlag) || userFlag === currentDisplayFlag) &&
+                  (potentialDisplayName === null ||
+                    potentialDisplayName === currentDisplayName)
+                }
               >
                 <i>Done</i>
                 <i className="bi bi-check" style={{ fontSize: 21 }} />
