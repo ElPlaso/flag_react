@@ -19,7 +19,7 @@ export default function SignIn() {
     if (user != null) {
       navigate("/profile");
     }
-  }, [user]);
+  }, [user, navigate]);
 
   return (
     <>
