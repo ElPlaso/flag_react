@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
+import { toast } from "react-toastify";
 
 const AuthContext = React.createContext();
 
@@ -33,6 +34,15 @@ export function AuthProvider({ children }) {
 
   const logOut = () => {
     signOut(auth);
+    toast.success("Signed out", {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+    });
   };
 
   const value = { googleSignIn, logOut, user, uid };

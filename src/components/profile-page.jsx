@@ -43,6 +43,7 @@ export default function Profile() {
       await logOut();
     } catch (error) {}
   };
+
   const toggleEditMode = () => {
     setEditMode(!editMode);
     setUserFlag(null);

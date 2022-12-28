@@ -9,11 +9,14 @@ import { GameProvider } from "./contexts/game-context";
 import { AuthProvider } from "./contexts/auth-context";
 import { ProfileProvider } from "./contexts/profile-context";
 import PrivateRoute from "./components/private-route";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <GameProvider>
       <AuthProvider>
+        <ToastContainer />
         <Router>
           <Routes>
             <Route exact path="/" element={<Game />}></Route>
