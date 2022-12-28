@@ -12,11 +12,7 @@ Flags from: https://flagcdn.com/
 
 ### Prospectives
 
-add personal local scoreboard
-
-add timer 
-
-add account/login system 
+add personal stats section to profile-page
 
 add public leaderboard 
 
@@ -25,6 +21,10 @@ add multiplayer
 implement country selector feature
 
 other quizzes such as capital cities
+
+### Updates
+
+ui for game-over component.
 
 ### Fixes
 
