@@ -2,6 +2,7 @@ import "./App.css";
 import React from "react";
 import Game from "./components/game";
 import GameIndex from "./components/game-index";
+import Community from "./components/community-page";
 import SignIn from "./components/signin-page";
 import Profile from "./components/profile-page";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
@@ -21,6 +22,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Game />}></Route>
             <Route exact path="/index" element={<GameIndex />}></Route>
+            <Route exact path="/community" element={<Community />}></Route>
             <Route exact path="/signin" element={<SignIn />}></Route>
             <Route
               exact
