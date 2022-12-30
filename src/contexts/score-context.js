@@ -8,6 +8,7 @@ import {
   collection,
   query,
   getDocs,
+  where,
 } from "firebase/firestore";
 
 const ScoreContext = React.createContext();
@@ -15,7 +16,10 @@ const ScoreContext = React.createContext();
 export function ScoreProvider({ children }) {
   async function getHighScores() {
     let highscores = [];
-    const q = query(collection(db, "highscores"));
+    const q = query(
+      collection(db, "highscores"),
+      where("region", "==", "global")
+    );
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {

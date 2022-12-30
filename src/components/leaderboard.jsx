@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Card, Table, Spinner } from "react-bootstrap";
-import FlagIconBadge from "./flag-icon-badge";
+import { Card, Spinner, Tabs, Tab } from "react-bootstrap";
 import { useScoreContext } from "../contexts/score-context";
 import { useProfileContext } from "../contexts/profile-context";
+import LeaderboardTable from "./leaderboard-table";
 
 export default function Leaderboard() {
   const { getHighScores } = useScoreContext();
@@ -23,6 +23,8 @@ export default function Leaderboard() {
           flag: profileData.flag_code,
           score: score.score,
           streak: score.hi_streak,
+          region: score.region,
+          control: score.control,
         });
       }
       setData(data);
@@ -32,12 +34,18 @@ export default function Leaderboard() {
     }
   };
 
+  const sortBoard = (a, b) => {
+    if (a.score !== b.score) {
+      return b.score - a.score;
+    } else {
+      return b.streak - a.streak;
+    }
+  };
+
   useEffect(() => {
     fetchHighScores();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  let i = 1;
 
   return (
     <>
@@ -51,47 +59,42 @@ export default function Leaderboard() {
         }}
       >
         <Card.Body>
-          <Card.Title>Leaderboard.</Card.Title>
+          <Card.Title>Leaderboard</Card.Title>
+          <Card.Text>For time-controlled games of global flags.</Card.Text>
           {loading ? (
             <Card.Body style={{ textAlign: "center" }}>
               <Spinner />
             </Card.Body>
           ) : (
-            <Table responsive size="sm">
-              <thead>
-                <tr>
-                  <th>
-                    <i className="bi bi-list-ol" />
-                  </th>
-                  <th>
-                    <i className="bi bi-person-fill" />
-                  </th>
-                  <th>
-                    <i className="bi bi-star-fill" />
-                  </th>
-                  <th>
-                    <i className="bi bi-fire" />
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((leader) => {
-                  return (
-                    <tr key={i}>
-                      <td className="text-secondary">{i++}</td>
-                      <td className="text-secondary">
-                        {!leader.username ? "-" : leader.username}{" "}
-                        {leader.flag && (
-                          <FlagIconBadge userFlag={leader.flag} />
-                        )}
-                      </td>
-                      <td className="text-secondary">{leader.score}</td>
-                      <td className="text-secondary">{leader.streak}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
+            <>
+              <Tabs
+                defaultActiveKey="bullet"
+                id="uncontrolled-tab-example"
+                className="mb-3"
+              >
+                <Tab eventKey="bullet" title="Bullet">
+                  <LeaderboardTable
+                    tableData={data
+                      .filter((score) => score.control === 60)
+                      .sort(sortBoard)}
+                  />
+                </Tab>
+                <Tab eventKey="blitz" title="Blitz">
+                  <LeaderboardTable
+                    tableData={data
+                      .filter((score) => score.control === 180)
+                      .sort(sortBoard)}
+                  />
+                </Tab>
+                <Tab eventKey="casual" title="Casual">
+                  <LeaderboardTable
+                    tableData={data
+                      .filter((score) => score.control === 300)
+                      .sort(sortBoard)}
+                  />
+                </Tab>
+              </Tabs>
+            </>
           )}
         </Card.Body>
       </Card>
