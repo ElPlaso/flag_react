@@ -63,6 +63,7 @@ export function GameProvider({ children }) {
     setGameOver(false);
     setGameMode(null);
     setAllFlags(true);
+    setGameHead("Global");
   };
 
   const restart = () => {
@@ -71,7 +72,6 @@ export function GameProvider({ children }) {
     setGameOver(false);
     setNumCorrect(0);
     setMissedFlags([]);
-    setGameHead("Global");
   };
 
   const value = {

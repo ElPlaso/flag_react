@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import logo from "../images/flag.png";
 import MissedFlags from "./missed-flags";
@@ -7,6 +7,10 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import FlagView from "./flag";
 import { useGameContext } from "../contexts/game-context";
+
+import { useAuthContext } from "../contexts/auth-context";
+import { useScoreContext } from "../contexts/score-context";
+import { ErrorResponse } from "@remix-run/router";
 
 export default function GameOver() {
   const {
@@ -17,13 +21,30 @@ export default function GameOver() {
     countries,
     restart,
     goHome,
+    timeSetting,
+    gameHead,
   } = useGameContext();
+
+  const { user } = useAuthContext();
+  const { setScore } = useScoreContext();
 
   const [viewMissed, setViewMissed] = useState(false);
 
   const toggleView = () => {
     setViewMissed(!viewMissed);
   };
+
+  useEffect(() => {
+    if (gameMode === "2") {
+      if (user) {
+        try {
+          let region = gameHead.replace(/\s+/g, "").toLowerCase();
+          setScore(user.uid, numCorrect, longestStreak, region, timeSetting);
+        } catch (error) {}
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
