@@ -1,10 +1,29 @@
 import React, { useContext } from "react";
 import { db } from "../firebase";
-import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  collection,
+  query,
+  getDocs,
+} from "firebase/firestore";
 
 const ScoreContext = React.createContext();
 
 export function ScoreProvider({ children }) {
+  async function getHighScores() {
+    let highscores = [];
+    const q = query(collection(db, "highscores"));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      highscores.push(doc.data());
+    });
+    return highscores;
+  }
+
   async function setScore(uid, score, hiStreak, region, control) {
     let id = region + ":" + control + ":" + uid;
     let scoreData = await getScore(id);
@@ -55,6 +74,7 @@ export function ScoreProvider({ children }) {
 
   const value = {
     setScore,
+    getHighScores,
   };
 
   return (

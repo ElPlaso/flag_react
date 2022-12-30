@@ -7,10 +7,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import FlagView from "./flag";
 import { useGameContext } from "../contexts/game-context";
-
 import { useAuthContext } from "../contexts/auth-context";
 import { useScoreContext } from "../contexts/score-context";
-import { ErrorResponse } from "@remix-run/router";
 
 export default function GameOver() {
   const {

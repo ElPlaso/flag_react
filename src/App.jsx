@@ -19,26 +19,26 @@ function App() {
     <GameProvider>
       <AuthProvider>
         <ScoreProvider>
-          <ToastContainer />
-          <Router>
-            <Routes>
-              <Route exact path="/" element={<Game />}></Route>
-              <Route exact path="/index" element={<GameIndex />}></Route>
-              <Route exact path="/community" element={<Community />}></Route>
-              <Route exact path="/signin" element={<SignIn />}></Route>
-              <Route
-                exact
-                path="/profile"
-                element={
-                  <PrivateRoute>
-                    <ProfileProvider>
+          <ProfileProvider>
+            <ToastContainer />
+            <Router>
+              <Routes>
+                <Route exact path="/" element={<Game />}></Route>
+                <Route exact path="/index" element={<GameIndex />}></Route>
+                <Route exact path="/community" element={<Community />}></Route>
+                <Route exact path="/signin" element={<SignIn />}></Route>
+                <Route
+                  exact
+                  path="/profile"
+                  element={
+                    <PrivateRoute>
                       <Profile />
-                    </ProfileProvider>
-                  </PrivateRoute>
-                }
-              ></Route>
-            </Routes>
-          </Router>
+                    </PrivateRoute>
+                  }
+                ></Route>
+              </Routes>
+            </Router>
+          </ProfileProvider>
         </ScoreProvider>
       </AuthProvider>
     </GameProvider>
