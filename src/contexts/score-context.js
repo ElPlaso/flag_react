@@ -36,6 +36,8 @@ export function ScoreProvider({ children }) {
         await updateScore(id, score, hiStreak);
       } else if (score === scoreData.score && hiStreak > scoreData.hi_streak) {
         await updateStreak(id, hiStreak);
+      } else {
+        return false;
       }
     } else {
       await setDoc(doc(db, "highscores", id), {
@@ -46,6 +48,7 @@ export function ScoreProvider({ children }) {
         control: control,
       });
     }
+    return true;
   }
 
   async function getScore(id) {

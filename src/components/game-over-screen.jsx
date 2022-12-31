@@ -9,6 +9,7 @@ import FlagView from "./flag";
 import { useGameContext } from "../contexts/game-context";
 import { useAuthContext } from "../contexts/auth-context";
 import { useScoreContext } from "../contexts/score-context";
+import { toast } from "react-toastify";
 
 export default function GameOver() {
   const {
@@ -37,7 +38,37 @@ export default function GameOver() {
       if (user) {
         try {
           let region = gameHead.replace(/\s+/g, "").toLowerCase();
-          setScore(user.uid, numCorrect, longestStreak, region, timeSetting);
+          let success = setScore(
+            user.uid,
+            numCorrect,
+            longestStreak,
+            region,
+            timeSetting
+          );
+          if (success) {
+            toast.success(
+              "New personal best for " +
+                gameHead +
+                "-" +
+                (timeSetting === 60
+                  ? "Bullet"
+                  : timeSetting === 180
+                  ? "Blitz"
+                  : "Casual "),
+              {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+              }
+            );
+            if (region === "global") {
+              toast.success("Score on public leaderboard!", {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: true,
+              });
+            }
+          }
         } catch (error) {}
       }
     }
