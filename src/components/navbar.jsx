@@ -27,6 +27,16 @@ export default function NavBar(props) {
             </Link>
             <Link
               className={
+                active === "community"
+                  ? "text-light nav-link"
+                  : "text-secondary nav-link"
+              }
+              to="/community"
+            >
+              Community
+            </Link>
+            <Link
+              className={
                 active === "profile"
                   ? "text-light nav-link"
                   : "text-secondary nav-link"
