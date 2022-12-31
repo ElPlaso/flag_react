@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import logo from "../images/flag.png";
 import MissedFlags from "./missed-flags";
@@ -7,6 +7,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import FlagView from "./flag";
 import { useGameContext } from "../contexts/game-context";
+import { useAuthContext } from "../contexts/auth-context";
+import { useScoreContext } from "../contexts/score-context";
+import { toast } from "react-toastify";
 
 export default function GameOver() {
   const {
@@ -17,13 +20,60 @@ export default function GameOver() {
     countries,
     restart,
     goHome,
+    timeSetting,
+    gameHead,
   } = useGameContext();
+
+  const { user } = useAuthContext();
+  const { setScore } = useScoreContext();
 
   const [viewMissed, setViewMissed] = useState(false);
 
   const toggleView = () => {
     setViewMissed(!viewMissed);
   };
+
+  useEffect(() => {
+    if (gameMode === "2") {
+      if (user) {
+        try {
+          let region = gameHead.replace(/\s+/g, "").toLowerCase();
+          let success = setScore(
+            user.uid,
+            numCorrect,
+            longestStreak,
+            region,
+            timeSetting
+          );
+          if (success) {
+            toast.success(
+              "New personal best for " +
+                gameHead +
+                "-" +
+                (timeSetting === 60
+                  ? "Bullet"
+                  : timeSetting === 180
+                  ? "Blitz"
+                  : "Casual "),
+              {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+              }
+            );
+            if (region === "global") {
+              toast.success("Score on public leaderboard!", {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: true,
+              });
+            }
+          }
+        } catch (error) {}
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
