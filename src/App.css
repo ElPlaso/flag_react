@@ -46,8 +46,9 @@
 .list-of-names {
   height: 200px;
   overflow-y: scroll;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 15px;
+}
+
+.list-card {
   margin-left: 15px;
   margin-right: 15px;
 }
