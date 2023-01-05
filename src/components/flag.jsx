@@ -10,7 +10,7 @@ export default function FlagView(props) {
       className={props.shake ? "shake" : undefined}
       onContextMenu={rightClickHandler}
       draggable="false"
-      src={"https://flagcdn.com/h240/" + props.name + ".png"}
+      src={"https://flagcdn.com/w320/" + props.name + ".png"}
       alt="oops"
     />
   );
