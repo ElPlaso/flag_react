@@ -51,6 +51,17 @@ export function ScoreProvider({ children }) {
     return true;
   }
 
+  async function getUserHighScores(uid) {
+    let highscores = [];
+    const q = query(collection(db, "highscores"), where("uid", "==", uid));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      highscores.push(doc.data());
+    });
+    return highscores;
+  }
+
   async function getScore(id) {
     const docRef = doc(db, "highscores", id);
     const docSnap = await getDoc(docRef);
@@ -82,6 +93,7 @@ export function ScoreProvider({ children }) {
   const value = {
     setScore,
     getHighScores,
+    getUserHighScores,
   };
 
   return (

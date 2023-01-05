@@ -6,6 +6,7 @@ import FlagIconBadge from "./flag-icon-badge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import data from "../data/country-names";
 import { useProfileContext } from "../contexts/profile-context";
+import UserHighscores from "./user-highscores";
 
 export default function Profile() {
   const { logOut, user, uid } = useAuthContext();
@@ -97,7 +98,7 @@ export default function Profile() {
       <div className="App" id="user">
         {editMode !== true ? (
           <Card
-            className="text-secondary mt-4"
+            className="text-secondary mt-4 mb-4"
             style={{
               width: 350,
               fontSize: "18px",
@@ -157,7 +158,7 @@ export default function Profile() {
           </Card>
         ) : (
           <Card
-            className="text-secondary mt-4"
+            className="text-secondary mt-4 mb-4"
             style={{
               width: 350,
               fontSize: "18px",
@@ -263,6 +264,9 @@ export default function Profile() {
             </Card.Footer>
           </Card>
         )}
+        <div className="mb-5">
+          {!profileLoading && <UserHighscores uid={uid} />}
+        </div>
       </div>
     </>
   );
