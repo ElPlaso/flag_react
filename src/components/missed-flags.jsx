@@ -6,25 +6,25 @@ import { Card } from "react-bootstrap";
 export default function MissedFlags(props) {
   const { flags } = props;
   return (
-    <div>
-      <Carousel variant="dark" className="mt-4 " style={{ width: 300 }}>
-        {flags.map((country) => {
-          return (
-            <Carousel.Item key={country.code}>
-              <Card
-                style={{
-                  justifyContent: "center",
-                  height: "320px",
-                  backgroundColor: "transparent",
-                }}
-              >
-                <FlagView name={country.code} />
+    <Carousel variant="dark" className="mt-4 " style={{ width: 320 }}>
+      {flags.map((country) => {
+        return (
+          <Carousel.Item key={country.code}>
+            <Card
+              style={{
+                justifyContent: "center",
+                height: country.code === "np" ? 500 : 350,
+                backgroundColor: "transparent",
+              }}
+            >
+              <FlagView className="my-2" name={country.code} />
+              <Card.Text>
                 <div className="text-secondary">{country.name}</div>
-              </Card>
-            </Carousel.Item>
-          );
-        })}
-      </Carousel>
-    </div>
+              </Card.Text>
+            </Card>
+          </Carousel.Item>
+        );
+      })}
+    </Carousel>
   );
 }
