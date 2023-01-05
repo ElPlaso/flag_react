@@ -3,13 +3,15 @@ import Button from "react-bootstrap/Button";
 import ModeSelect from "./mode-row";
 import TimeSelect from "./time-row";
 import logo from "../images/flaghead.png";
+import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 import RegionSelect from "./region-select";
 import { useGameContext } from "../contexts/game-context";
 import { HashLink as Link } from "react-router-hash-link";
 
 export default function HomeMenu() {
-  const { gameMode, countries, timeSetting, startgame } = useGameContext();
+  const { gameMode, countries, timeSetting, startgame, gameHead } =
+    useGameContext();
 
   return (
     <>
@@ -25,72 +27,77 @@ export default function HomeMenu() {
         <header className="welcome-header">Vexed.</header>
       </div>
 
-      <div className="mode-desc mb-2">
-        {gameMode === null ? (
-          <div className="text-secondary">Please select a game mode . . . </div>
-        ) : gameMode === "1" ? (
-          <div>Test yourself on {countries.length} flags</div>
-        ) : (
-          gameMode === "2" && <div>Added time pressure</div>
-        )}
-      </div>
-
-      <ModeSelect />
-
-      {gameMode === "2" && (
-        <>
-          <div className="mt-2 mb-1 mode-desc " style={{ alignItems: "right" }}>
-            {timeSetting === null ? (
-              <div className="text-secondary ">
-                Please select a time mode . . .
+      <Card className="mt-4">
+        <Card.Body>
+          <div className="mode-desc mb-2">
+            {gameMode === null ? (
+              <div className="text-secondary">
+                Please select a game mode . . .{" "}
               </div>
-            ) : timeSetting === 60 ? (
-              <div style={{ marginRight: 205 }}>Bullet</div>
-            ) : timeSetting === 180 ? (
-              <div>Blitz</div>
             ) : (
-              timeSetting === 300 && (
-                <div style={{ marginLeft: 195 }}>Casual</div>
-              )
+              <div>
+                Test yourself on {countries.length}{" "}
+                {gameHead !== "Global" ? gameHead : "global"}
+                {gameHead !== "Global" && gameHead !== "Europe"
+                  ? "n "
+                  : gameHead === "Europe" && "an "}{" "}
+                flags
+                {gameMode === "2" && <div>... with added time pressure</div>}
+              </div>
             )}
           </div>
-          <TimeSelect />
-        </>
-      )}
 
-      <div className="mt-2">
-        <RegionSelect />
-      </div>
+          <ModeSelect />
 
-      <div className={"mt-2"}>
-        {(gameMode === "2" && timeSetting !== null) || gameMode === "1" ? (
+          {gameMode === "2" && (
+            <>
+              <div
+                className="mt-2 mb-1 mode-desc "
+                style={{ alignItems: "right" }}
+              >
+                {timeSetting === null ? (
+                  <div className="text-secondary ">
+                    Please select a time setting . . .
+                  </div>
+                ) : timeSetting === 60 ? (
+                  <div style={{ marginRight: 205 }}>Bullet</div>
+                ) : timeSetting === 180 ? (
+                  <div>Blitz</div>
+                ) : (
+                  timeSetting === 300 && (
+                    <div style={{ marginLeft: 195 }}>Casual</div>
+                  )
+                )}
+              </div>
+              <TimeSelect />
+            </>
+          )}
+
+          <div className="mt-2">
+            <RegionSelect />
+          </div>
+        </Card.Body>
+        <Card.Footer>
           <Button
             style={{ width: 300, height: 50 }}
+            disabled={
+              (gameMode === "2" && timeSetting === null) || gameMode === null
+            }
             className="start-button text-light"
             onClick={startgame}
-            variant="light"
+            variant="secondary"
           >
             <i>Begin </i>
             <i className="bi bi-arrow-right"> </i>
           </Button>
-        ) : (
-          <Button
-            style={{ width: 300, height: 50 }}
-            disabled
-            className="start-button text-light"
-            variant="light"
-          >
-            <i>Begin </i>
-            <i className="bi bi-arrow-right"> </i>
-          </Button>
-        )}
-      </div>
+        </Card.Footer>
+      </Card>
 
       <Accordion
         flush
         data-bs-toggle="collapse"
-        className="mt-2"
-        style={{ width: 300 }}
+        className="mt-2 mb-4"
+        style={{ width: "90%", maxWidth: "350px" }}
       >
         <Accordion.Item eventKey="0">
           <Accordion.Header>
@@ -102,10 +109,9 @@ export default function HomeMenu() {
             You can guess multiple times <br></br>
             You cannot revisit a skipped flag <br></br>
             Disputed states are included<br></br>
-            "All flags" includes flags of non-soverign states and more <br></br>
-            View featured country/region names
+            "All flags" includes "non-countries" <br></br>
+            View valid answers{" "}
             <Link className="App-link" to="/index#top">
-              {" "}
               here
             </Link>
             <br></br>
