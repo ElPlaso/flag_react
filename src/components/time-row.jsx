@@ -1,12 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import { useGameContext } from "../contexts/game-context";
 
 export default function TimeSelect() {
-  const { setTimeSetting } = useGameContext();
+  const { setTimeSetting, timeSetting } = useGameContext();
 
-  const [timeValue, settimeValue] = useState(null);
+  const [timeValue, setTimeValue] = useState(null);
+
+  useEffect(() => {
+    switch (timeSetting) {
+      case 60:
+        setTimeValue("1");
+        break;
+      case 180:
+        setTimeValue("2");
+        break;
+      case 300:
+        setTimeValue("3");
+        break;
+      default:
+        break;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const times = [
     { name: "1:00", value: "1", seconds: 60 },
@@ -16,7 +33,7 @@ export default function TimeSelect() {
 
   const changeListener = (e) => {
     let val = e.currentTarget.value;
-    settimeValue(val);
+    setTimeValue(val);
     setTimeSetting(times[val - 1].seconds);
   };
 

@@ -5,9 +5,9 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import { useGameContext } from "../contexts/game-context";
 
 export default function ModeSelect() {
-  const { setGameMode, setTimeSetting } = useGameContext();
+  const { setGameMode, setTimeSetting, gameMode } = useGameContext();
 
-  const [modeValue, setmodeValue] = useState(null);
+  const [modeValue, setmodeValue] = useState(gameMode);
 
   const modes = [
     { name: "Stroll Mode", value: "1" },
