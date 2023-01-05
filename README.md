@@ -14,8 +14,6 @@ Flags from: https://flagcdn.com/
 
 add personal stats section to profile-page
 
-add public leaderboard 
-
 add multiplayer
 
 implement country selector feature
@@ -24,7 +22,6 @@ other quizzes such as capital cities
 
 ### Updates
 
-ui for game-over component.
 
 ### Fixes
 
