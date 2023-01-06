@@ -12,8 +12,6 @@ Flags from: https://flagcdn.com/
 
 ### Prospectives
 
-add personal stats section to profile-page
-
 add multiplayer
 
 implement country selector feature
@@ -22,6 +20,7 @@ other quizzes such as capital cities
 
 ### Updates
 
+optimise database logic
 
 ### Fixes
 
