@@ -10,7 +10,7 @@ export default function NavBar(props) {
       <Container>
         <Navbar.Brand className="welcome-header">
           <Link className="text-decoration-none text-light" to="/#play">
-            Vexed.
+            FlagReact.
           </Link>
         </Navbar.Brand>
         <Navbar.Collapse id="basic-navbar-nav">

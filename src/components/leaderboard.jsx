@@ -59,7 +59,7 @@ export default function Leaderboard() {
         }}
       >
         <Card.Body>
-          <Card.Title>Leaderboard</Card.Title>
+          <Card.Title>Vexed Leaderboard</Card.Title>
           <Card.Text>For time-controlled games of global flags.</Card.Text>
           {loading ? (
             <Card.Body style={{ textAlign: "center" }}>

@@ -25,6 +25,7 @@ export default function HomeMenu() {
           alt="flaghead"
         />
         <header className="welcome-header">Vexed.</header>
+        <h4>The FlagReact game.</h4>
       </div>
 
       <Card className="mt-4">

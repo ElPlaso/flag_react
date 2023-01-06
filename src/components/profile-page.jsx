@@ -110,7 +110,7 @@ export default function Profile() {
 
             <Card.Body>
               <Card.Title>Hello {user?.displayName}.</Card.Title>
-              <Card.Text>Welcome to your Vexed profile.</Card.Text>
+              <Card.Text>Welcome to your FlagReact profile.</Card.Text>
             </Card.Body>
             {profileLoading ? (
               <Card.Body>
