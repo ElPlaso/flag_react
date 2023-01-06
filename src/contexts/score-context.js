@@ -90,10 +90,34 @@ export function ScoreProvider({ children }) {
     });
   }
 
+  async function setUntimedScore(uid, score, total, region) {
+    let id = region + ":" + uid;
+    let scoreData = await getScore(id);
+    if (scoreData) {
+      if (score > scoreData.score) {
+        const scoreRef = doc(db, "highscores", id);
+        await updateDoc(scoreRef, {
+          score: score,
+        });
+      } else {
+        return false;
+      }
+    } else {
+      await setDoc(doc(db, "highscores", id), {
+        uid: uid,
+        score: score,
+        total: total,
+        region: region,
+      });
+    }
+    return true;
+  }
+
   const value = {
     setScore,
     getHighScores,
     getUserHighScores,
+    setUntimedScore,
   };
 
   return (

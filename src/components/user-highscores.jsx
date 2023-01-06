@@ -30,17 +30,28 @@ export default function UserHighscores(props) {
     for (const region of regions) {
       let regionScores = [];
       for (const time of times) {
-        let regionScore = fetched.find((score) => {
+        let timedScore = fetched.find((score) => {
           return score.region === region && score.control === time;
         });
-        if (regionScore) {
+        if (timedScore) {
           regionScores.push({
-            score: regionScore.score,
-            streak: regionScore.hi_streak,
+            score: timedScore.score,
+            streak: timedScore.hi_streak,
           });
         } else {
           regionScores.push("");
         }
+      }
+      let untimedScore = fetched.find((score) => {
+        return score.region === region && !score.control;
+      });
+      if (untimedScore) {
+        regionScores.push({
+          score: untimedScore.score,
+          total: untimedScore.total,
+        });
+      } else {
+        regionScores.push("");
       }
       userscores.push(regionScores);
     }
@@ -64,11 +75,11 @@ export default function UserHighscores(props) {
     "Oceania",
   ];
 
-  let iconColors = ["danger", "warning", "success"];
+  let iconColors = ["danger", "warning", "success", "primary"];
 
-  let times = ["Bullet", "Blitz", "Casual"];
+  let times = ["Bullet", "Blitz", "Casual", "Stroll"];
 
-  let indexes = [0, 1, 2];
+  let indexes = [0, 1, 2, 3];
 
   return (
     <>
@@ -119,12 +130,15 @@ export default function UserHighscores(props) {
                       overlay={
                         <Popover id="popover-basic">
                           <Popover.Body>
-                            {score[0].score || score[1].score || score[2].score
+                            {score[0].score ||
+                            score[1].score ||
+                            score[2].score ||
+                            score[3].score
                               ? indexes.map((i) => {
                                   return (
                                     <div key={i}>
                                       {score[i].score && (
-                                        <div>
+                                        <>
                                           <i
                                             className={
                                               "bi bi-star-fill text-" +
@@ -132,13 +146,20 @@ export default function UserHighscores(props) {
                                             }
                                           />{" "}
                                           {score[i].score}{" "}
-                                          <i
-                                            className={
-                                              "bi bi-fire text-" + iconColors[i]
-                                            }
-                                          />{" "}
-                                          {score[i].streak}
-                                        </div>
+                                          {score[i].streak ? (
+                                            <>
+                                              <i
+                                                className={
+                                                  "bi bi-fire text-" +
+                                                  iconColors[i]
+                                                }
+                                              />{" "}
+                                              {score[i].streak}
+                                            </>
+                                          ) : (
+                                            <>{"/ " + score[i].total}</>
+                                          )}
+                                        </>
                                       )}
                                     </div>
                                   );
@@ -153,6 +174,7 @@ export default function UserHighscores(props) {
                         <td>{score[0].score}</td>
                         <td>{score[1].score}</td>
                         <td>{score[2].score}</td>
+                        <td>{score[3].score}</td>
                       </tr>
                     </OverlayTrigger>
                   );
