@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Card, Table } from "react-bootstrap";
 import { useScoreContext } from "../contexts/score-context";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+import Popover from "react-bootstrap/Popover";
 
 export default function UserHighscores(props) {
   const { uid } = props;
@@ -31,9 +34,12 @@ export default function UserHighscores(props) {
           return score.region === region && score.control === time;
         });
         if (regionScore) {
-          regionScores.push(regionScore.score + "-" + regionScore.hi_streak);
+          regionScores.push({
+            score: regionScore.score,
+            streak: regionScore.hi_streak,
+          });
         } else {
-          regionScores.push(" ");
+          regionScores.push("");
         }
       }
       userscores.push(regionScores);
@@ -58,6 +64,12 @@ export default function UserHighscores(props) {
     "Oceania",
   ];
 
+  let iconColors = ["danger", "warning", "success"];
+
+  let times = ["Bullet", "Blitz", "Casual"];
+
+  let indexes = [0, 1, 2];
+
   return (
     <>
       <Card
@@ -71,36 +83,78 @@ export default function UserHighscores(props) {
         <Card.Body>
           <Card.Title>Your Highscores</Card.Title>
 
-          <Table responsive size="sm">
+          <Table responsive size="sm" hover>
             <thead>
               <tr>
                 <th>
                   <i className="bi bi-globe-central-south-asia text-secondary" />
                 </th>
-                <th>
-                  <i className="bi bi-star-fill text-danger" />{" "}
-                  <i className="bi bi-fire text-danger" />
-                </th>
-                <th>
-                  <i className="bi bi-star-fill text-warning" />{" "}
-                  <i className="bi bi-fire text-warning" />
-                </th>
-                <th>
-                  <i className="bi bi-star-fill text-success" />{" "}
-                  <i className="bi bi-fire text-success" />
-                </th>
+                {indexes.map((i) => {
+                  return (
+                    <th key={i}>
+                      <OverlayTrigger
+                        trigger={["hover", "focus"]}
+                        overlay={(props) => (
+                          <Tooltip {...props}>{times[i]}</Tooltip>
+                        )}
+                      >
+                        <div>
+                          <i
+                            className={"bi bi-star-fill text-" + iconColors[i]}
+                          />{" "}
+                        </div>
+                      </OverlayTrigger>
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             {userScores && (
               <tbody>
                 {userScores.map((score) => {
                   return (
-                    <tr key={i}>
-                      <td>{regionText[i++]}</td>
-                      <td>{score[0]}</td>
-                      <td>{score[1]}</td>
-                      <td>{score[2]}</td>
-                    </tr>
+                    <OverlayTrigger
+                      trigger={["hover", "focus"]}
+                      placement="top"
+                      overlay={
+                        <Popover id="popover-basic">
+                          <Popover.Body>
+                            {score[0].score || score[1].score || score[2].score
+                              ? indexes.map((i) => {
+                                  return (
+                                    <div key={i}>
+                                      {score[i].score && (
+                                        <div>
+                                          <i
+                                            className={
+                                              "bi bi-star-fill text-" +
+                                              iconColors[i]
+                                            }
+                                          />{" "}
+                                          {score[i].score}{" "}
+                                          <i
+                                            className={
+                                              "bi bi-fire text-" + iconColors[i]
+                                            }
+                                          />{" "}
+                                          {score[i].streak}
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })
+                              : "no scores"}
+                          </Popover.Body>
+                        </Popover>
+                      }
+                    >
+                      <tr key={i}>
+                        <td>{regionText[i++]}</td>
+                        <td>{score[0].score}</td>
+                        <td>{score[1].score}</td>
+                        <td>{score[2].score}</td>
+                      </tr>
+                    </OverlayTrigger>
                   );
                 })}
               </tbody>
