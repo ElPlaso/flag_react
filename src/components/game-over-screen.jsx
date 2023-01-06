@@ -28,7 +28,7 @@ export default function GameOver() {
   const navigate = useNavigate();
 
   const { user } = useAuthContext();
-  const { setScore } = useScoreContext();
+  const { setScore, setUntimedScore } = useScoreContext();
 
   const [viewMissed, setViewMissed] = useState(false);
 
@@ -38,7 +38,26 @@ export default function GameOver() {
 
   useEffect(() => {
     async function setHighScore() {
-      if (gameMode === "2") {
+      if (gameMode === "1") {
+        try {
+          let region = gameHead.replace(/\s+/g, "").toLowerCase();
+          let success = await setUntimedScore(
+            user.uid,
+            numCorrect,
+            countries.length,
+            region
+          );
+          if (success) {
+            toast.success("New personal best for " + gameHead, {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: true,
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else if (gameMode === "2") {
         if (user) {
           try {
             let region = gameHead.replace(/\s+/g, "").toLowerCase();
