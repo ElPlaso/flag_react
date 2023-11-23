@@ -8,9 +8,9 @@ export default function FlagIconBadge(props) {
       <Image
         draggable="false"
         src={
-          "https://www.countryflagicons.com/SHINY/32/" +
+          "https://flagsapi.com/" +
           props.userFlag.toUpperCase() +
-          ".png"
+          "/SHINY/32.png"
         }
         alt={props.userFlag}
       />
