@@ -10,7 +10,7 @@ export default function FlagIconBadge(props) {
         src={
           "https://flagsapi.com/" +
           props.userFlag.toUpperCase() +
-          "/SHINY/32.png"
+          "/shiny/32.png"
         }
         alt={props.userFlag}
       />
