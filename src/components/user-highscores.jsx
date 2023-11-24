@@ -91,8 +91,11 @@ export default function UserHighscores(props) {
           textAlign: "left",
         }}
       >
+        <Card.Header style={{ textAlign: "center" }}>
+          <i className="bi bi-clipboard-data"></i>
+        </Card.Header>
         <Card.Body>
-          <Card.Title>Your Highscores</Card.Title>
+          <Card.Text>Your best Vexed results.</Card.Text>
 
           <Table responsive size="sm" hover>
             <thead>

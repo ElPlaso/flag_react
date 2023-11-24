@@ -36,8 +36,8 @@ export default function SignIn() {
           <Card.Body style={{ alignItems: "center" }}>
             <Card.Title>Sign In.</Card.Title>
             <Card.Text>
-              Please press the button below to register a Vexed account, or sign
-              in to an existing one.
+              Please press the button below to register a FlagReact account, or
+              sign in to an existing one.
             </Card.Text>
             <GoogleButton
               style={{ width: "100%" }}
